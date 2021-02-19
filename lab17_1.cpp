@@ -20,20 +20,66 @@ string toUpperStr(string x){
     return y;
 }
 
-void importDataFromFile(){
-
+void importDataFromFile(string file,vector<string> &name,vector<int> &score,vector<char> &grade){
+    char format[] = "%[^:]: %d %d %d";
+    char namee[100];
+    int a,b,c;
+    int sum;
+    string text;
+    ifstream source;
+    const char *f = file.c_str();
+    source.open(f);
+    while(getline(source,text)){
+        const char *t = text.c_str();
+        sscanf(t,format,namee,&a,&b,&c);
+        sum = a+b+c;
+        name.push_back(namee);
+        score.push_back(sum);
+        grade.push_back(score2grade(sum));
+    }
+    source.close();
 }
 
-void getCommand(){
-
+void getCommand(string &command,string &key){
+    cout << "Please input your command: ";
+    char x2[100];
+    char y2[100];
+    char format[] = "%s %[^\n]";
+    string text;
+    getline(cin,text);
+    const char * textConverted = text.c_str();
+    sscanf(textConverted,format,x2,y2);
+    command = x2;
+    key = y2;
 }
 
-void searchName(){
+void searchName(vector<string> &name,vector<int> &score,vector<char> &grade,string key){
+    cout << "---------------------------------" << endl;
+    int count = 0;
+    for(unsigned int i =0;i < name.size();i++){
+        if(toUpperStr(key) == toUpperStr(name[i])){
+            cout << name[i] << "'s score = " << score[i] << endl;
+            cout << name[i] << "'s grade = " << grade[i] << endl;
+            count++;
+        }
+    }
+    if(count == 0) cout << "Cannot found." << endl;
+    cout << "---------------------------------" << endl;
+    }
 
-}
 
-void searchGrade(){
-
+void searchGrade(vector<string> &name,vector<int> &score,vector<char> &grade,string key){
+    cout << "---------------------------------" << endl;
+    int count = 0;
+    const char *k = key.c_str();
+    for(unsigned int i =0;i < name.size();i++){
+        if(*k == grade[i]){
+            cout << name[i] <<" (" << score[i] << ")" << endl;
+            count++;
+        }
+    }
+    if(count == 0) cout << "Cannot found." << endl;
+    cout << "---------------------------------" << endl;
 }
 
 
